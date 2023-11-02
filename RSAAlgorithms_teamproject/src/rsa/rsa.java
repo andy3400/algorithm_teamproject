@@ -4,37 +4,19 @@ import javax.crypto.Cipher;
 import java.security.*;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.HashMap;
+import java.util.List;
 
-public class rsa {
+public class rsa implements MyEncryption {
 	// 수정 테스트
 	//interface
-	
-	
-
-	public static void main(String[] args) {
-		HashMap<String, String> rsaKeyPair = createKeypairAsString();
-		String publicKey = rsaKeyPair.get("publicKey");
-		String privateKey = rsaKeyPair.get("privateKey");
-
-		System.out.println("만들어진 공개키:" + publicKey);
-		System.out.println("만들어진 개인키:" + privateKey);
-
-		String plainText = "플레인 텍스트";
-		System.out.println("평문: " + plainText);
-
-		String encryptedText = encrypt(plainText, publicKey);
-		System.out.println("암호화: " + encryptedText);
-
-		String decryptedText = decrypt(encryptedText, privateKey);
-		System.out.println("복호화: " + decryptedText);
-	}
-
 	/*
 	 * 공개키와 개인키 한 쌍 생성
 	 */
-	public static HashMap<String, String> createKeypairAsString() {
+	@Override
+	public HashMap<String, String> createKeypairAsString() {
 		HashMap<String, String> stringKeypair = new HashMap<>();
 
 		try {
@@ -61,7 +43,8 @@ public class rsa {
 	/*
 	 * 암호화 : 공개키로 진행
 	 */
-	public static String encrypt(String plainText, String stringPublicKey) {
+	@Override
+	public String encrypt(String plainText, String stringPublicKey) {
 		String encryptedText = null;
 
 		try {
@@ -87,7 +70,8 @@ public class rsa {
 	/*
 	 * 복호화 : 개인키로 진행
 	 */
-	public static String decrypt(String encryptedText, String stringPrivateKey) {
+	@Override
+	public String decrypt(String encryptedText, String stringPrivateKey) {
 		String decryptedText = null;
 
 		try {
@@ -110,5 +94,34 @@ public class rsa {
 		}
 
 		return decryptedText;
+	}
+	
+
+	public static void main(String[] args) {
+		MyEncryption enc = new rsa();
+		List<CustomerInfo> custls = new ArrayList<>();
+		
+		custls.add(new CustomerInfo("김관용",1 ,"" ,"" ));
+        custls.add(new CustomerInfo("이태호",2,"",""));
+        custls.add(new CustomerInfo("정은섭",3 ,"" ,"" ));
+        custls.add(new CustomerInfo("박성은",4,"",""));
+        
+        
+		
+		HashMap<String, String> rsaKeyPair = enc.createKeypairAsString();
+		String publicKey = rsaKeyPair.get("publicKey");
+		String privateKey = rsaKeyPair.get("privateKey");
+
+		System.out.println("만들어진 공개키:" + publicKey);
+		System.out.println("만들어진 개인키:" + privateKey);
+
+		String plainText = "플레인 텍스트";
+		System.out.println("평문: " + plainText);
+
+		String encryptedText = enc.encrypt(plainText, publicKey);
+		System.out.println("암호화: " + encryptedText);
+
+		String decryptedText = enc.decrypt(encryptedText, privateKey);
+		System.out.println("복호화: " + decryptedText);
 	}
 }
