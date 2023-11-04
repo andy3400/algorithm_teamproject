@@ -9,6 +9,7 @@ import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
+import java.lang.String;
 
 public class rsa implements MyEncryption {
 	// 수정 테스트
@@ -95,6 +96,7 @@ public class rsa implements MyEncryption {
 
 		return decryptedText;
 	}
+	
 	public int getIndexOfName(String customerName, List<CustomerInfo> customerList) {
 	    for (int i = 0; i < customerList.size(); i++) {
 	        if (customerList.get(i).getName().equals(customerName)) {
@@ -110,8 +112,7 @@ public class rsa implements MyEncryption {
 		Scanner sc = new Scanner(System.in);
         rsa a = new rsa();//non static 에러 방지
        
-
-		
+        
 		custls.add(new CustomerInfo("김관용","",""));	//("이름", "전화번호", "주소")
         custls.add(new CustomerInfo("이태호","",""));
         custls.add(new CustomerInfo("정은섭","",""));
@@ -129,8 +130,9 @@ public class rsa implements MyEncryption {
 		System.out.println("만들어진 공개키:" + publicKey);
 		System.out.println("만들어진 개인키:" + privateKey);
 
-		String plainText = "플레인 텍스트";
-		System.out.println("평문: " + plainText);
+		// 리스트 인덱스 암호화
+		String plainText = String.valueOf(ind);
+		System.out.println("리스트 인덱스: " + plainText);
 
 		String encryptedText = enc.encrypt(plainText, publicKey);
 		System.out.println("암호화: " + encryptedText);
