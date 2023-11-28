@@ -16,12 +16,12 @@ class KeyPair {
 }
 
 KeyPair generateKeyPair() {
-  int p = 17;
-  int q = 19;
+  int p = 7;
+  int q = 3;
   int n = p * q;
   int phi = (p-1)*(q-1);
-  int e = 5;
-  int d = e.modInverse(phi);
+  int e = 3;
+  int d = 7;
 
   return KeyPair(n, e, d);
 }
@@ -144,7 +144,7 @@ class DecryptionScreen extends StatelessWidget {
 
   int decryptService(int input, int n, int privateKey) {
     int decrypted;
-    decrypted = pow(input.toDouble(), privateKey).toInt()%n;
+    decrypted = (pow(input.toDouble(), privateKey)).toInt()%n;
     return decrypted;
   }
 }
@@ -159,7 +159,7 @@ class _showDecryptResultDialog extends StatelessWidget {
     print('$decryptedValue');
 
     CustomerInfo customerInfo = CustomerInfo();
-    int index = decryptedValue;
+    int index = decryptedValue - 5;
     String customerInfoText;
 
     if (index >= 0 && index < customerInfo.customers.length) {
