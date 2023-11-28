@@ -111,7 +111,7 @@ public class rsa implements MyEncryption {
 		List<CustomerInfo> custls = new ArrayList<>();	//고객 정보 리스트 생성
 		Scanner sc = new Scanner(System.in);
         rsa a = new rsa();//non static 에러 방지
-       
+        
         
 		custls.add(new CustomerInfo("김관용","",""));	//("이름", "전화번호", "주소")
         custls.add(new CustomerInfo("이태호","",""));
@@ -133,7 +133,7 @@ public class rsa implements MyEncryption {
 		// 리스트 인덱스 암호화
 		String plainText = String.valueOf(ind);
 		System.out.println("리스트 인덱스: " + plainText);
-
+		
 		String encryptedText = enc.encrypt(plainText, publicKey);
 		System.out.println("암호화: " + encryptedText);
 

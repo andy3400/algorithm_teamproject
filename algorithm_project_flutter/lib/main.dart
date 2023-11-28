@@ -69,6 +69,7 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
 class EncryptionScreen extends StatelessWidget {
   final TextEditingController _nameController = TextEditingController();
 
