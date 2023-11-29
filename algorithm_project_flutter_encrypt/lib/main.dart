@@ -7,22 +7,22 @@ void main() {
 }
 
 class KeyPair {
-  BigInt publicKey;
-  BigInt privateKey;
+  int publicKey;
+  int privateKey;
+  int n;
 
-  KeyPair(this.publicKey, this.privateKey);
+  KeyPair(this.n, this.publicKey, this.privateKey);
 }
 
 KeyPair generateKeyPair() {
-  Random random = Random();
-  BigInt p = BigInt.from(17);
-  BigInt q = BigInt.from(19);
-  BigInt n = p * q;
-  BigInt phi = (p - BigInt.one) * (q - BigInt.one);
-  BigInt e = BigInt.from(5);
-  BigInt d = e.modInverse(phi);
+  int p = 2;
+  int q = 7;
+  int n = p * q;
+  int phi = (p-1)*(q-1);//7
+  int e = 5;
+  int d = 11;
 
-  return KeyPair(n, d);
+  return KeyPair(n, e, d);
 }
 
 class Customer {
@@ -121,11 +121,11 @@ class EncryptionScreen extends StatelessWidget {
                 Navigator.of(context).pop();
 
                 CustomerInfo customerInfo = CustomerInfo();
-                int index = customerInfo.getIndexByName(_nameController.text);
+                int index = customerInfo.getIndexByName(_nameController.text)+5;
 
-                if (index != -1) {
-                  BigInt encryptedValue =
-                  encryptService(index.toString(), keyPair.publicKey);
+                if (index != 4) {
+                  int encryptedValue = encryptService(index, keyPair.n, keyPair.publicKey);
+                  print('$index, $encryptedValue');
                   showDialog(
                     context: context,
                     builder: (context) =>
@@ -163,19 +163,16 @@ class EncryptionScreen extends StatelessWidget {
     );
   }
 
-  BigInt encryptService(String input, BigInt publicKey) {
-    List<int> bytes = input.codeUnits;
-    BigInt message = BigInt.from(0);
-    for (int byte in bytes) {
-      message = message * BigInt.from(256) + BigInt.from(byte);
-    }
+  int encryptService(int input, int n, int publicKey) {
+    int encrypted;
+    encrypted = ((pow((input.toDouble()), publicKey)).toInt())%n;
 
-    return message.modPow(BigInt.from(5), publicKey);
+    return encrypted;
   }
 }
 
 class _showResultDialog extends StatelessWidget {
-  final BigInt encryptedValue;
+  final int encryptedValue;
 
   _showResultDialog(this.encryptedValue);
 

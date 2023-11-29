@@ -1,31 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'dart:math';
-import 'dart:convert';
-
 
 void main() {
   runApp(MyApp());
 }
+
 class KeyPair {
   int publicKey;
   int privateKey;
   int n;
-
   KeyPair(this.n, this.publicKey, this.privateKey);
 }
 
+// 키 쌍 생성 함수 (단순 예제용)
 KeyPair generateKeyPair() {
   int p = 2;
   int q = 7;
   int n = p * q;
-  int phi = (p-1)*(q-1);
+  int phi = (p - 1) * (q - 1);
   int e = 5;
   int d = 11;
 
   return KeyPair(n, e, d);
 }
-
 
 class Customer {
   String name;
@@ -41,12 +38,12 @@ class Customer {
 
 class CustomerInfo extends StatelessWidget {
   final List<Customer> customers = [
-    Customer(name: '김관용', address: '', phoneNumber: ''),
-    Customer(name: '이태호', address: '', phoneNumber: ''),
-    Customer(name: '정은섭', address: '', phoneNumber: ''),
-    Customer(name: '박성은', address: '', phoneNumber: ''),
-    // 고객정보리스트 추가
+    Customer(name: '김관용', address: '성남시 수정구', phoneNumber: '010-1234-1234'),
+    Customer(name: '이태호', address: '성남시 수정구', phoneNumber: '010-1234-1234'),
+    Customer(name: '정은섭', address: '성남시 수정구', phoneNumber: '010-1234-1234'),
+    Customer(name: '박성은', address: '성남시 수정구', phoneNumber: '010-1234-1234'),
   ];
+
   int getIndexByName(String name) {
     for (int i = 0; i < customers.length; i++) {
       if (customers[i].name == name) {
@@ -56,12 +53,11 @@ class CustomerInfo extends StatelessWidget {
     return -1;
   }
 
-
   @override
   Widget build(BuildContext context) {
-    throw UnimplementedError();
+    // UI를 표현하는 코드는 여기에 작성
+    return Container();
   }
-
 }
 
 class MyApp extends StatelessWidget {
@@ -90,9 +86,10 @@ class DecryptionScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            // 네트워크 이미지를 가져와 사용
             Image.network(
               'https://cdn-icons-png.flaticon.com/512/8315/8315710.png',
-              height: 350,
+              height: 200,
             ),
             SizedBox(height: 20),
             ElevatedButton(
@@ -115,13 +112,15 @@ class DecryptionScreen extends StatelessWidget {
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text('Decryption'),
-          content: TextField(controller: _keyController, decoration: InputDecoration(labelText: 'Enter Key'),),
+          content: TextField(
+            controller: _keyController,
+            decoration: InputDecoration(labelText: 'Enter Key'),
+          ),
           actions: [
             ElevatedButton(
               onPressed: () async {
                 String inp = _keyController.text;
                 int input = int.parse(inp);
-                print('$_keyController');
                 int decryptedValue = decryptService(input, keyPair.n, keyPair.privateKey);
                 showDialog(
                   context: context,
@@ -132,7 +131,7 @@ class DecryptionScreen extends StatelessWidget {
             ),
             ElevatedButton(
               onPressed: () {
-                Navigator.of(context).pop(); // 다이얼로그 닫기
+                Navigator.of(context).pop();
               },
               child: Text('Close'),
             ),
@@ -144,7 +143,7 @@ class DecryptionScreen extends StatelessWidget {
 
   int decryptService(int input, int n, int privateKey) {
     int decrypted;
-    decrypted = (pow(input.toDouble(), privateKey)).toInt()%n;
+    decrypted = (pow(input.toDouble(), privateKey)).toInt() % n;
     return decrypted;
   }
 }
@@ -156,21 +155,20 @@ class _showDecryptResultDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('$decryptedValue');
-
     CustomerInfo customerInfo = CustomerInfo();
-    int index = decryptedValue -5;
+    int index = decryptedValue - 5;
     String customerInfoText;
 
     if (index >= 0 && index < customerInfo.customers.length) {
       Customer customer = customerInfo.customers[index];
-      customerInfoText = 'Name: ${customer.name}\n Address: ${customer.address}\nPhone Number: ${customer.phoneNumber}';
+      customerInfoText =
+      'Name: ${customer.name}\n Address: ${customer.address}\nPhone Number: ${customer.phoneNumber}';
     } else {
-      customerInfoText = 'Invlaid index';
+      customerInfoText = 'Invalid index';
     }
 
     return AlertDialog(
-      title: Text('고객 정보'),
+      title: Text('Customer Information'),
       content: Text(customerInfoText),
       actions: [
         ElevatedButton(
